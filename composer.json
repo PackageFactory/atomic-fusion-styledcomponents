@@ -1,0 +1,19 @@
+{
+    "description": "",
+    "type": "neos-package",
+    "name": "packagefactory/atomicfusion-styledcomponents",
+    "require": {
+        "neos/flow": "*",
+        "css-crush/css-crush": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PackageFactory\\AtomicFusion\\StyledComponents\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "PackageFactory.AtomicFusion.StyledComponents"
+        }
+    }
+}
