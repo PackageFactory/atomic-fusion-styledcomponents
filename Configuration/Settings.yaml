@@ -1,0 +1,4 @@
+Neos:
+  Fusion:
+    dsl:
+      css: PackageFactory\AtomicFusion\StyledComponents\Dsl\CssDslImplementation
