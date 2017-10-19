@@ -76,15 +76,7 @@ class StyledComponentImplementation extends ComponentImplementation
 
         $styleSheet = \csscrush_string($styleSheet);
 
-        list($document, $root) = $this->getHtmlRootElement($markup);
-        if ($root) {
-            $styleTag = $document->createElement('style', $styleSheet);
-            $root->appendChild($styleTag);
-
-            return $document->saveHTML($root);
-        }
-
-        return $markup . sprintf('<style>%s</style>', $styleSheet);
+        return sprintf('<style>%s</style>', $styleSheet) . $markup;
     }
 
     protected function getStyles()
@@ -111,36 +103,5 @@ class StyledComponentImplementation extends ComponentImplementation
         }
 
         return $props;
-    }
-
-    /**
-     * Detects a unique root tag in the given $html string and returns its DOMNode representation - or NULL if no unique root element could be found
-     *
-     * @param string $html
-     * @return \DOMNode
-     */
-    protected function getHtmlRootElement($html)
-    {
-        $html = trim($html);
-        if ($html === '') {
-            return null;
-        }
-        $domDocument = new \DOMDocument('1.0', 'UTF-8');
-        // ignore parsing errors
-        $useInternalErrorsBackup = libxml_use_internal_errors(true);
-        $domDocument->loadHTML($html);
-        $xPath = new \DOMXPath($domDocument);
-        $rootElement = $xPath->query('//html/body/*');
-        if ($useInternalErrorsBackup !== true) {
-            libxml_use_internal_errors($useInternalErrorsBackup);
-        }
-        if ($rootElement === false || $rootElement->length !== 1) {
-            return null;
-        }
-        // detect whether loadHTML has wrapped plaintext in a p-tag without asking for permission
-        if ($rootElement instanceof \DOMNodeList && $rootElement->item(0)->tagName === 'p' && preg_match('/^<p/ui', $html) === 0) {
-            return null;
-        }
-        return [$domDocument, $rootElement->item(0)];
     }
 }
